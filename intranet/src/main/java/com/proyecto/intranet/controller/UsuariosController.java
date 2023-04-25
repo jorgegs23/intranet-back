@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.proyecto.intranet.dto.UsuarioDto;
 import com.proyecto.intranet.provider.UsuariosProvider;
+import com.proyecto.intranet.utils.MessageResponseDto;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -26,33 +27,33 @@ public class UsuariosController {
 	private UsuariosProvider usuariosProvider;
 	
 	@GetMapping("/byId/{id}")
-	public ResponseEntity<UsuarioDto> getUsuariosById(@PathVariable("id") Integer id){
-		UsuarioDto usuario = usuariosProvider.getUsuarioById(id);
-		return new ResponseEntity<>(usuario, HttpStatus.OK);		
+	public MessageResponseDto<UsuarioDto> getUsuariosById(@PathVariable("id") Integer id){
+		MessageResponseDto<UsuarioDto> usuario = usuariosProvider.getUsuarioById(id);
+		return usuario;		
 	}
 	
 	@GetMapping("/all")
-	public ResponseEntity<List<UsuarioDto>> getAllUsuarios(){
-		List<UsuarioDto> usuarios = usuariosProvider.getAllUsuarios();
-		return new ResponseEntity<>(usuarios, HttpStatus.OK);		
+	public MessageResponseDto<List<UsuarioDto>> getAllUsuarios(){
+		MessageResponseDto<List<UsuarioDto>> usuarios = usuariosProvider.getAllUsuarios();
+		return usuarios;		
 	}
 
 	@PostMapping("/add")
-    public ResponseEntity<String> addUsuarioDto(@RequestBody UsuarioDto UsuarioDto) {
-        String result = usuariosProvider.addUsuario(UsuarioDto);
-        return new ResponseEntity<>(result, HttpStatus.CREATED);
+    public MessageResponseDto<UsuarioDto> addUsuarioDto(@RequestBody UsuarioDto UsuarioDto) {
+		MessageResponseDto<UsuarioDto> result = usuariosProvider.addUsuario(UsuarioDto);
+        return result;
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<String> updateUsuarioDto(@RequestBody UsuarioDto UsuarioDto) {
-    	String result = usuariosProvider.editUsuario(UsuarioDto);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+    @PutMapping("/edit")
+    public MessageResponseDto<String> updateUsuarioDto(@RequestBody UsuarioDto UsuarioDto) {
+    	MessageResponseDto<String> result = usuariosProvider.editUsuario(UsuarioDto);
+        return result;
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteUsuarioDto(@PathVariable("id") Integer id) {
-    	String result = usuariosProvider.deleteUsuario(id);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+    public MessageResponseDto<String> deleteUsuarioDto(@PathVariable("id") Integer id) {
+    	MessageResponseDto<String> result = usuariosProvider.deleteUsuario(id);
+        return result;
     }
     
     @GetMapping("/auth/login")

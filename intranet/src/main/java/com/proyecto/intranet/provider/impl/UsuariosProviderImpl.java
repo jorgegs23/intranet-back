@@ -11,6 +11,7 @@ import com.proyecto.intranet.dto.UsuarioDto;
 import com.proyecto.intranet.entity.UsuarioEntity;
 import com.proyecto.intranet.provider.UsuariosProvider;
 import com.proyecto.intranet.repository.UsuariosRepository;
+import com.proyecto.intranet.utils.MessageResponseDto;
 import com.proyecto.intranet.utils.ObjectMapperUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,68 +27,69 @@ public class UsuariosProviderImpl implements UsuariosProvider{
 	private ModelMapper modelMapper;
 	
 	@Override
-	public UsuarioDto getUsuarioById(Integer id) {
+	public MessageResponseDto<UsuarioDto> getUsuarioById(Integer id) {
 		try {
 			Optional<UsuarioEntity> usuario = usuariosRepository.findById(id);
 			if (usuario.isPresent()) {
 				UsuarioDto dto = modelMapper.map(usuario.get(), UsuarioDto.class);
-				return dto;
+				return MessageResponseDto.success(dto);
 			} else {
-				return null;
+				return MessageResponseDto.fail("No se ha encontrado el usuario");
 			}
 			
 		} catch (Exception e) {
 			log.error("Error al encontrar el usuario: " +  e.getMessage());
+			return MessageResponseDto.fail("Error al encontrar el usuario");
 		}
-		return null;
 	}
 
 	@Override
-	public List<UsuarioDto> getAllUsuarios() {
+	public MessageResponseDto<List<UsuarioDto>> getAllUsuarios() {
 		try {
 			List<UsuarioEntity> usuarios = usuariosRepository.findAll();
 			List<UsuarioDto> dtos = ObjectMapperUtils.mapAll(usuarios, UsuarioDto.class);
-			return dtos;	
+			return MessageResponseDto.success(dtos);	
 		} catch (Exception e) {
 			log.error("Error al encontrar el usuario:" +  e.getMessage());
+			return MessageResponseDto.fail("Error al encontrar los usuarios");
 		}
-		return null;
 	}
 	
 	@Override
-	public String addUsuario(UsuarioDto usuarioDto) {
+	public MessageResponseDto<UsuarioDto> addUsuario(UsuarioDto usuarioDto) {
 		UsuarioEntity usuario = new UsuarioEntity();
 		try {
 			usuario = ObjectMapperUtils.map(usuarioDto, UsuarioEntity.class);
 			usuario = usuariosRepository.save(usuario);
-			return "Usuario creado correctamente";
+			UsuarioDto dto = modelMapper.map(usuario, UsuarioDto.class);
+			return MessageResponseDto.success(dto);
 		} catch (Exception e) {
 			log.error("Error al crear el usuario: " +  e.getMessage());
-			return "Error al crear el usuario";
+			return MessageResponseDto.fail("Error al crear el usuario");
 		}
 	}
 	
 	@Override
-	public String editUsuario(UsuarioDto usuarioDto) {
+	public MessageResponseDto<String> editUsuario(UsuarioDto usuarioDto) {
 		UsuarioEntity usuario = new UsuarioEntity();
 		try {
 			usuario = ObjectMapperUtils.map(usuarioDto, UsuarioEntity.class);
 			usuario = usuariosRepository.save(usuario);
-			return "Usuario editado correctamente";
+			return MessageResponseDto.success("Usuario editado correctamente");
 		} catch (Exception e) {
 			log.error("Error al crear el usuario: " +  e.getMessage());
-			return "Error al editar el usuario";
+			return MessageResponseDto.fail("Error al editar el usuario");
 		}
 	}
 	
 	@Override
-	public String deleteUsuario(Integer id) {
+	public MessageResponseDto<String> deleteUsuario(Integer id) {
 		try {
 			usuariosRepository.deleteById(id);
-			return "Usuario eliminado correctamente";
+			return MessageResponseDto.success("Usuario eliminado correctamente");
 		} catch (Exception e) {
 			log.error("Error al eliminar usuario: " +  e.getMessage());
-			return "Error al eliminar el usuario";
+			return MessageResponseDto.fail("Error al eliminar el usuario");
 		}
 	}
 	

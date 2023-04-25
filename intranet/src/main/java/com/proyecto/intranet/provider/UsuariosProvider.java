@@ -3,19 +3,20 @@ package com.proyecto.intranet.provider;
 import java.util.List;
 
 import com.proyecto.intranet.dto.UsuarioDto;
+import com.proyecto.intranet.utils.MessageResponseDto;
 
 public interface UsuariosProvider {
 
-	UsuarioDto getUsuarioById(Integer id);
+	MessageResponseDto<UsuarioDto> getUsuarioById(Integer id);
 
-	List<UsuarioDto> getAllUsuarios();
+	MessageResponseDto<List<UsuarioDto>> getAllUsuarios();
 
 	UsuarioDto loginUsuario(String login, String pass);
 
-	String addUsuario(UsuarioDto usuarioDto);
+	MessageResponseDto<UsuarioDto> addUsuario(UsuarioDto usuarioDto);
 
-	String editUsuario(UsuarioDto usuarioDto);
+	MessageResponseDto<String> editUsuario(UsuarioDto usuarioDto);
 
-	String deleteUsuario(Integer id);
+	MessageResponseDto<String> deleteUsuario(Integer id);
 
 }
