@@ -3,7 +3,9 @@ package com.proyecto.intranet.provider;
 import java.util.List;
 
 import com.proyecto.intranet.dto.UsuarioDto;
+import com.proyecto.intranet.dto.UsuarioFiltroDto;
 import com.proyecto.intranet.utils.MessageResponseDto;
+import com.proyecto.intranet.utils.Paginated;
 
 public interface UsuariosProvider {
 
@@ -18,5 +20,7 @@ public interface UsuariosProvider {
 	MessageResponseDto<String> editUsuario(UsuarioDto usuarioDto);
 
 	MessageResponseDto<String> deleteUsuario(Integer id);
+
+	MessageResponseDto<Paginated<UsuarioDto>> filtroUsuarios(UsuarioFiltroDto filtro);
 
 }

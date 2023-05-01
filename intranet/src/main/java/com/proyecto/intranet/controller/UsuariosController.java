@@ -16,11 +16,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.proyecto.intranet.dto.UsuarioDto;
+import com.proyecto.intranet.dto.UsuarioFiltroDto;
 import com.proyecto.intranet.provider.UsuariosProvider;
 import com.proyecto.intranet.utils.MessageResponseDto;
+import com.proyecto.intranet.utils.Paginated;
+import com.sun.java.accessibility.util.Translator;
+
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/usuarios")
+@Slf4j
 public class UsuariosController {
 
 	@Autowired
@@ -38,6 +44,17 @@ public class UsuariosController {
 		return usuarios;		
 	}
 
+	@PostMapping("/filter")
+	public MessageResponseDto<Paginated<UsuarioDto>> filterUsuarios(@RequestBody UsuarioFiltroDto filtro) {
+		try {
+			MessageResponseDto<Paginated<UsuarioDto>> result = usuariosProvider.filtroUsuarios(filtro);
+			return result;
+		} catch (Exception e) {
+			log.error("Error al recuperar los participantes: " +e.getMessage());
+			return MessageResponseDto.fail("Error al recuperar los participantes");
+		}
+	}
+	
 	@PostMapping("/add")
     public MessageResponseDto<UsuarioDto> addUsuarioDto(@RequestBody UsuarioDto UsuarioDto) {
 		MessageResponseDto<UsuarioDto> result = usuariosProvider.addUsuario(UsuarioDto);
