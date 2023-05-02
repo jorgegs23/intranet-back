@@ -68,8 +68,8 @@ public class UsuariosController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public MessageResponseDto<String> deleteUsuarioDto(@PathVariable("id") Integer id) {
-    	MessageResponseDto<String> result = usuariosProvider.deleteUsuario(id);
+    public MessageResponseDto<String> deleteUsuarioDto(@PathVariable("id") List<Integer> ids) {
+    	MessageResponseDto<String> result = usuariosProvider.deleteUsuario(ids);
         return result;
     }
     

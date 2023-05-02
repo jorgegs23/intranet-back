@@ -19,7 +19,7 @@ public interface UsuariosProvider {
 
 	MessageResponseDto<String> editUsuario(UsuarioDto usuarioDto);
 
-	MessageResponseDto<String> deleteUsuario(Integer id);
+	MessageResponseDto<String> deleteUsuario(List<Integer> ids);
 
 	MessageResponseDto<Paginated<UsuarioDto>> filtroUsuarios(UsuarioFiltroDto filtro);
 

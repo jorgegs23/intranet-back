@@ -1,5 +1,6 @@
 package com.proyecto.intranet.provider.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -127,14 +128,46 @@ public class UsuariosProviderImpl implements UsuariosProvider{
 	}
 	
 	@Override
-	public MessageResponseDto<String> deleteUsuario(Integer id) {
+	public MessageResponseDto<String> deleteUsuario(List<Integer> ids) {
 		try {
-			usuariosRepository.deleteById(id);
-			return MessageResponseDto.success("Usuario eliminado correctamente");
+			if (ids == null || ids.size() < 1) {
+				return MessageResponseDto.fail("No se recibieron usuarios para ser eliminados");
+			} 
+			List<Integer> eliminadosBien = new ArrayList<Integer>();
+			List<Integer> eliminadosMal= new ArrayList<Integer>();
+			for(Integer id: ids) {
+				try {
+					usuariosRepository.deleteById(id);
+					eliminadosBien.add(id);
+				} catch (Exception e) {
+					log.error("Error al eliminar el usuario con id " + id + ":" + e.getMessage() );
+					eliminadosMal.add(id);
+				}
+			}
+				
+			if (eliminadosBien.size() > 0 && eliminadosMal.size() == 0 ) {
+				if (eliminadosBien.size() > 1) {
+					return MessageResponseDto.success("Usuarios eliminados correctamente");
+				} else {
+					return MessageResponseDto.success("Usuario eliminado correctamente");
+				}
+			}
+			StringBuilder sb = new StringBuilder();	
+			if (eliminadosMal.size() > 0 ) {
+				if (eliminadosMal.size() > 1) {
+					sb.append("Error al eliminar los usuarios.");
+				} else {
+					sb.append("Error al eliminar el usuario.");
+				}
+				if (eliminadosBien.size() > 1) sb.append(" El resto se realizaron correctamente.");
+				return MessageResponseDto.fail(sb.toString());
+			}
+
 		} catch (Exception e) {
 			log.error("Error al eliminar usuario: " +  e.getMessage());
 			return MessageResponseDto.fail("Error al eliminar el usuario");
 		}
+		return MessageResponseDto.fail("No se ha eliminado ningún usuario");
 	}
 	
 	
