@@ -1,15 +1,20 @@
 package com.proyecto.intranet.provider.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.proyecto.intranet.dto.CategoriaDto;
 import com.proyecto.intranet.dto.PerfilDto;
+import com.proyecto.intranet.entity.CategoriaEntity;
 import com.proyecto.intranet.entity.PerfilEntity;
 import com.proyecto.intranet.provider.MasterDataProvider;
+import com.proyecto.intranet.repository.CategoriaRepository;
 import com.proyecto.intranet.repository.PerfilRepository;
 import com.proyecto.intranet.utils.ObjectMapperUtils;
+import com.sun.org.apache.xml.internal.resolver.CatalogEntry;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,16 +25,33 @@ public class MasterDataProviderImpl implements MasterDataProvider{
 	@Autowired
 	private PerfilRepository perfilRepository;
 	
+	@Autowired
+	private CategoriaRepository categoriaRepository;
+	
 	@Override
 	public List<PerfilDto> getAllPerfiles() {
+		List<PerfilDto> dtos =  new ArrayList<PerfilDto>();
 		try {
 			List<PerfilEntity> perfiles = perfilRepository.findAll();
-			List<PerfilDto> dtos = ObjectMapperUtils.mapAll(perfiles, PerfilDto.class);
+			dtos = ObjectMapperUtils.mapAll(perfiles, PerfilDto.class);
 			return dtos;	
 		} catch (Exception e) {
 			log.error("Error al encontrar los perfiles:" +  e.getMessage());
 		}
-		return null;
+		return dtos;
+	}
+
+	@Override
+	public List<CategoriaDto> getAllCategorias() {
+		List<CategoriaDto> dtos =  new ArrayList<CategoriaDto>();
+		try {
+			List<CategoriaEntity> categorias = categoriaRepository.findAll();
+			dtos = ObjectMapperUtils.mapAll(categorias, CategoriaDto.class);
+			return dtos;	
+		} catch (Exception e) {
+			log.error("Error al encontrar las categorias:" +  e.getMessage());
+		}
+		return dtos;
 	}
 	
 }

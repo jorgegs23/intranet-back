@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.proyecto.intranet.dto.CategoriaDto;
 import com.proyecto.intranet.dto.PerfilDto;
 import com.proyecto.intranet.provider.MasterDataProvider;
 
@@ -23,5 +24,11 @@ public class MasterDataController {
 	public ResponseEntity<List<PerfilDto>> getAllPerfiles(){
 		List<PerfilDto> perfiles = masterDataProvider.getAllPerfiles();
 		return new ResponseEntity<>(perfiles, HttpStatus.OK);		
+	}
+	
+	@GetMapping("/allCategorias")
+	public ResponseEntity<List<CategoriaDto>> getAllCategorias(){
+		List<CategoriaDto> categorias = masterDataProvider.getAllCategorias();
+		return new ResponseEntity<>(categorias, HttpStatus.OK);		
 	}
 }
