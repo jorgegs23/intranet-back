@@ -9,7 +9,7 @@ public class DesignacionFiltroDto {
 	
 	private Integer temporada;
 	
-	private Integer mes;
+	private LocalDate mes;
 	
 	private LocalDate fecha;
 	

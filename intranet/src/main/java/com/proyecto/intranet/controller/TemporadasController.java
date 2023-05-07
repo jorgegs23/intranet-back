@@ -28,6 +28,12 @@ public class TemporadasController {
 		return temporadas;		
 	}
 	
+	@GetMapping("/activa")
+	public MessageResponseDto<TemporadaDto> getTemporadasActiva(){
+		MessageResponseDto<TemporadaDto> temporadas = temporadaProvider.getTemporadaActiva();
+		return temporadas;		
+	}
+	
 	@GetMapping("/create")
     public MessageResponseDto<String> createTemporada() {
 		MessageResponseDto<String> result = temporadaProvider.crearTemporada();

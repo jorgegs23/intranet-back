@@ -1,6 +1,5 @@
 package com.proyecto.intranet.entity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -35,6 +34,10 @@ public class PartidoEntity {
 	private TemporadaEntity temporada;
 	
 	@ManyToOne
+	@JoinColumn(name="CATEGORIA")
+	private CategoriaEntity categoria;
+	
+	@ManyToOne
 	@JoinColumn(name="COMPETICION")
 	private CompeticionEntity competicion;
 
@@ -43,11 +46,11 @@ public class PartidoEntity {
 	
 	@ManyToOne
 	@JoinColumn(name="EQUIPO1")
-	private EquipoEntity equipo1;
+	private EquipoEntity equipoLocal;
 	
 	@ManyToOne
 	@JoinColumn(name="EQUIPO2")
-	private EquipoEntity equipo2;
+	private EquipoEntity equipoVisitante;
 	
 	@Column(name="FECHA")
 	private LocalDateTime fecha;

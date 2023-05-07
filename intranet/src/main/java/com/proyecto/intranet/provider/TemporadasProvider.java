@@ -15,4 +15,6 @@ public interface TemporadasProvider {
 
 	MessageResponseDto<String> cerrarTemporada(Integer id);
 
+	MessageResponseDto<TemporadaDto> getTemporadaActiva();
+
 }

@@ -12,12 +12,14 @@ public class PartidoDto {
 	private TemporadaDto temporada;
 
 	private CompeticionDto competicion;
+	
+	private CategoriaDto categoria;
 
 	private Integer jornada;
 
-	private EquipoDto equipo1;
+	private EquipoDto equipoLocal;
 
-	private EquipoDto equipo2;
+	private EquipoDto equipoVisitante;
 
 	private LocalDateTime fecha;
 

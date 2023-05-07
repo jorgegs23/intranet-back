@@ -94,8 +94,8 @@ public class EquiposProviderImpl implements EquiposProvider{
 			equiposResponse.setPaginacion(pagination);
 			return MessageResponseDto.success(equiposResponse);
 		} catch (Exception e) {
-			log.error("Error al recuperar los participantes: " +e.getMessage());
-			return MessageResponseDto.fail("Error al recuperar los participantes");
+			log.error("Error al recuperar los equipos: " +e.getMessage());
+			return MessageResponseDto.fail("Error al recuperar los equipos");
 		}
 	}
 
@@ -167,5 +167,17 @@ public class EquiposProviderImpl implements EquiposProvider{
 			return MessageResponseDto.fail("Error al eliminar el equipo");
 		}
 		return MessageResponseDto.fail("No se ha eliminado ningún equipo");
+	}
+
+	@Override
+	public MessageResponseDto<List<EquipoDto>> getByCategoriaAndTemporada(String categoria, Integer idTemporada) {
+		try {
+			List<EquipoEntity> equipos = equiposRepository.findByCategoriaAndTemporada(categoria, idTemporada);
+			List<EquipoDto> dtos = ObjectMapperUtils.mapAll(equipos, EquipoDto.class);
+			return MessageResponseDto.success(dtos);	
+		} catch (Exception e) {
+			log.error("Error al encontrar el equipo:" +  e.getMessage());
+			return MessageResponseDto.fail("Error al encontrar los equipos");
+		}
 	}
 }

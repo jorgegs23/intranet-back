@@ -5,6 +5,7 @@ import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,9 @@ public class TemporadasProviderImpl implements TemporadasProvider{
 	
 	@Autowired
 	private TemporadasRepository temporadasRepository;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 
 	@Override
 	public MessageResponseDto<List<TemporadaDto>> getAllTemporadas() {
@@ -98,6 +102,22 @@ public class TemporadasProviderImpl implements TemporadasProvider{
 		} catch (Exception e) {
 			log.error("Error al cerrar la temporada:" +  e.getMessage());
 			return MessageResponseDto.fail("Error al cerrar la temporada");
+		}
+	}
+
+	@Override
+	public MessageResponseDto<TemporadaDto> getTemporadaActiva() {
+		try {
+			Optional<TemporadaEntity> temporada = temporadasRepository.findTemporadaActiva();
+			if (temporada.isPresent()) {
+				TemporadaDto dto = modelMapper.map(temporada.get(), TemporadaDto.class);
+				return MessageResponseDto.success(dto);
+			} else {
+				return MessageResponseDto.fail("No se ha encontrado una temporada activa");
+			}	
+		} catch (Exception e) {
+			log.error("Error al cerrar la temporada:" +  e.getMessage());
+			return MessageResponseDto.fail("Error al la temporada activa");
 		}
 	}
 }

@@ -1,5 +1,7 @@
 package com.proyecto.intranet.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,4 +21,10 @@ public interface EquiposRepository extends JpaRepository<EquipoEntity, Integer> 
 			+ " (:#{#filtro.municipio} IS NULL OR UPPER(e.municipio) LIKE UPPER(CONCAT('%',:#{#filtro.municipio},'%'))) AND "
 			+ " (:#{#filtro.temporada} IS NULL OR :#{#filtro.temporada} = e.temporada.id )")
 	Page<EquipoEntity> filterPage(@Param("filtro") EquipoFiltroDto filtro, Pageable pageable);
+
+	@Query("SELECT e FROM EquipoEntity e WHERE "
+			+ " ( :categoria IS NULL OR :categoria = e.categoria.categoria ) AND "
+			+ " ( :idTemporada IS NULL OR :idTemporada =  e.temporada.id) ")
+	List<EquipoEntity> findByCategoriaAndTemporada(@Param("categoria")  String categoria, 
+			@Param("idTemporada") Integer idTemporada);
 }

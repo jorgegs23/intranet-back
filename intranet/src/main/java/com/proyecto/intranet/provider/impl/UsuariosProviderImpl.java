@@ -95,8 +95,8 @@ public class UsuariosProviderImpl implements UsuariosProvider{
 			usuariosResponse.setPaginacion(pagination);
 			return MessageResponseDto.success(usuariosResponse);
 		} catch (Exception e) {
-			log.error("Error al recuperar los participantes: " +e.getMessage());
-			return MessageResponseDto.fail("Error al recuperar los participantes");
+			log.error("Error al recuperar los usuarios: " +e.getMessage());
+			return MessageResponseDto.fail("Error al recuperar los usuarios");
 		}
 	}
 	

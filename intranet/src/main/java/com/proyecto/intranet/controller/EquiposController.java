@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.proyecto.intranet.dto.EquipoDto;
@@ -68,4 +69,12 @@ public class EquiposController {
     	MessageResponseDto<String> result = equiposProvider.deleteEquipo(ids);
         return result;
     }
+    
+    @GetMapping("/byCategoriaAndTemporada")
+	public MessageResponseDto<List<EquipoDto>> getByCategoriaAndTemporada(
+			@RequestParam(required = true) String categoria,
+			@RequestParam(required = true) Integer idTemporada){
+		MessageResponseDto<List<EquipoDto>> equipos = equiposProvider.getByCategoriaAndTemporada(categoria, idTemporada);
+		return equipos;		
+	}
 }

@@ -21,4 +21,6 @@ public interface EquiposProvider {
 
 	MessageResponseDto<String> deleteEquipo(List<Integer> ids);
 
+	MessageResponseDto<List<EquipoDto>> getByCategoriaAndTemporada(String idCategoria, Integer idTemporada);
+
 }
