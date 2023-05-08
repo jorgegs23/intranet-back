@@ -23,4 +23,6 @@ public interface UsuariosProvider {
 
 	MessageResponseDto<Paginated<UsuarioDto>> filtroUsuarios(UsuarioFiltroDto filtro);
 
+	MessageResponseDto<List<UsuarioDto>> getAllDesignables(boolean activos);
+
 }

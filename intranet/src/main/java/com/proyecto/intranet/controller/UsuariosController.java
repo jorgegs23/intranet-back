@@ -43,6 +43,13 @@ public class UsuariosController {
 		MessageResponseDto<List<UsuarioDto>> usuarios = usuariosProvider.getAllUsuarios();
 		return usuarios;		
 	}
+	
+	@GetMapping("/allDesignables/{activos}")
+	public MessageResponseDto<List<UsuarioDto>> getAllDesignables(@PathVariable("activos") boolean activos){
+		MessageResponseDto<List<UsuarioDto>> usuarios = usuariosProvider.getAllDesignables(activos);
+		return usuarios;		
+	}
+
 
 	@PostMapping("/filter")
 	public MessageResponseDto<Paginated<UsuarioDto>> filterUsuarios(@RequestBody UsuarioFiltroDto filtro) {

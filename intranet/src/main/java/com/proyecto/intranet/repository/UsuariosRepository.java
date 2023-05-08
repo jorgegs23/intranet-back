@@ -1,10 +1,14 @@
 package com.proyecto.intranet.repository;
 
+import java.util.List;
 import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -27,4 +31,12 @@ public interface UsuariosRepository extends JpaRepository<UsuarioEntity, Integer
 			+ " (:#{#filtro.validado} IS NULL OR :#{#filtro.validado} = u.validado )")
 	Page<UsuarioEntity> filterPage(@Param("filtro") UsuarioFiltroDto filtro, Pageable pageable);
 
+	@Query("SELECT u FROM UsuarioEntity u WHERE u.perfil.perfil IN ('ARB','OFI') AND u.validado = true "
+			+ " AND (:activos IS NULL OR u.activo = :activos)")
+	List<UsuarioEntity> findAllDesignables(@Param("activos") Boolean activos);
+
+	@Transactional
+	@Modifying
+	@Query("UPDATE UsuarioEntity u SET u.activo = false WHERE u.id=:id")
+	void desactivarUsuarioById(@Param("id") Integer id);
 }

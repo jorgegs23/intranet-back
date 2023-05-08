@@ -24,4 +24,11 @@ public interface DesignacionesRepository  extends JpaRepository<DesignacionEntit
 				+ " :#{#filtro.usuario} = e.oficial3.id OR :#{#filtro.usuario} = e.oficial4.id "
 			+ ") ")
 	Page<DesignacionEntity> filterPage(@Param("filtro") DesignacionFiltroDto filtro, Pageable pageable);
+	
+	@Query("SELECT count(e) FROM DesignacionEntity e WHERE "
+			+ " :idUsuario = e.arbitro1.id OR :idUsuario = e.arbitro2.id OR "
+			+ " :idUsuario = e.arbitro3.id OR  "
+			+ " :idUsuario = e.oficial1.id OR :idUsuario = e.oficial2.id OR "
+			+ " :idUsuario = e.oficial3.id OR :idUsuario = e.oficial4.id ")
+	Integer countDesignacionesByUsuario(@Param("idUsuario") Integer idUsuario);
 }

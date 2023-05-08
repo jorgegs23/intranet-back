@@ -16,6 +16,7 @@ import com.proyecto.intranet.dto.UsuarioDto;
 import com.proyecto.intranet.dto.UsuarioFiltroDto;
 import com.proyecto.intranet.entity.UsuarioEntity;
 import com.proyecto.intranet.provider.UsuariosProvider;
+import com.proyecto.intranet.repository.DesignacionesRepository;
 import com.proyecto.intranet.repository.UsuariosRepository;
 import com.proyecto.intranet.utils.MessageResponseDto;
 import com.proyecto.intranet.utils.ObjectMapperUtils;
@@ -31,6 +32,9 @@ public class UsuariosProviderImpl implements UsuariosProvider{
 	
 	@Autowired
 	private UsuariosRepository usuariosRepository;
+	
+	@Autowired
+	private DesignacionesRepository designacionesRepository;
 	
 	@Autowired
 	private ProviderUtiles providerUtiles;
@@ -135,21 +139,34 @@ public class UsuariosProviderImpl implements UsuariosProvider{
 			} 
 			List<Integer> eliminadosBien = new ArrayList<Integer>();
 			List<Integer> eliminadosMal= new ArrayList<Integer>();
+			List<Integer> desactivados= new ArrayList<Integer>();
 			for(Integer id: ids) {
 				try {
-					usuariosRepository.deleteById(id);
-					eliminadosBien.add(id);
+					if (designacionesRepository.countDesignacionesByUsuario(id) > 0) {	
+						usuariosRepository.desactivarUsuarioById(id);
+						desactivados.add(id);
+					} else {
+						usuariosRepository.deleteById(id);
+						eliminadosBien.add(id);
+					}		
 				} catch (Exception e) {
 					log.error("Error al eliminar el usuario con id " + id + ":" + e.getMessage() );
 					eliminadosMal.add(id);
 				}
 			}
 				
-			if (eliminadosBien.size() > 0 && eliminadosMal.size() == 0 ) {
+			if (eliminadosBien.size() > 0 && eliminadosMal.size() == 0  && desactivados.size() == 0 ) {
 				if (eliminadosBien.size() > 1) {
 					return MessageResponseDto.success("Usuarios eliminados correctamente");
 				} else {
 					return MessageResponseDto.success("Usuario eliminado correctamente");
+				}
+			}
+			if (eliminadosBien.size() == 0 && eliminadosMal.size() == 0  && desactivados.size() > 0 ) {
+				if (eliminadosBien.size() > 1) {
+					return MessageResponseDto.success("Usuarios desactivados correctamente");
+				} else {
+					return MessageResponseDto.success("Usuario desactivado correctamente");
 				}
 			}
 			StringBuilder sb = new StringBuilder();	
@@ -159,7 +176,8 @@ public class UsuariosProviderImpl implements UsuariosProvider{
 				} else {
 					sb.append("Error al eliminar el usuario.");
 				}
-				if (eliminadosBien.size() > 1) sb.append(" El resto se realizaron correctamente.");
+				if (eliminadosBien.size() > 1 || desactivados.size() > 0) 
+					sb.append(" El resto se eliminaron/desactivaron correctamente.");
 				return MessageResponseDto.fail(sb.toString());
 			}
 
@@ -186,6 +204,19 @@ public class UsuariosProviderImpl implements UsuariosProvider{
 			log.error("Error al encontrar el usuario en login: " +  e.getMessage());
 		}
 		return null;
+	}
+
+	@Override
+	public MessageResponseDto<List<UsuarioDto>> getAllDesignables(boolean activos) {
+		try {
+			Boolean allActivos = activos ? Boolean.TRUE : null;
+			List<UsuarioEntity> usuarios = usuariosRepository.findAllDesignables(allActivos);
+			List<UsuarioDto> dtos = ObjectMapperUtils.mapAll(usuarios, UsuarioDto.class);
+			return MessageResponseDto.success(dtos);	
+		} catch (Exception e) {
+			log.error("Error al encontrar el usuario:" +  e.getMessage());
+			return MessageResponseDto.fail("Error al encontrar los usuarios");
+		}
 	}
 
 }
