@@ -13,3 +13,7 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher
+
+jasper:
+  src: /compartido/app/intranetbk/jasper
+  img: /compartido/app/intranetbk/jasper/imagenes/

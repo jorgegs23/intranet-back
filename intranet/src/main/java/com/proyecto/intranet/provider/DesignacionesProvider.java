@@ -20,4 +20,6 @@ public interface DesignacionesProvider {
 	MessageResponseDto<String> editDesignacion(DesignacionDto designacionDto);
 
 	MessageResponseDto<String> deleteDesignacion(List<Integer> ids);
+
+	MessageResponseDto<byte[]> descargarInforme(DesignacionFiltroDto filtro);
 }

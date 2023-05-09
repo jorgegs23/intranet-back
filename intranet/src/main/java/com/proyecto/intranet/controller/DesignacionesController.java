@@ -68,4 +68,15 @@ public class DesignacionesController {
     	MessageResponseDto<String> result = designacionesProvider.deleteDesignacion(ids);
         return result;
     }
+    
+    @PostMapping("/informe")
+	public MessageResponseDto<byte[]> generarInforme(@RequestBody DesignacionFiltroDto filtro) {
+		try {
+			MessageResponseDto<byte[]> result = designacionesProvider.descargarInforme(filtro);
+			return result;
+		} catch (Exception e) {
+			log.error("Error al generar el informe: " +e.getMessage());
+			return MessageResponseDto.fail("Error al generar el informe");
+		}
+	}
 }

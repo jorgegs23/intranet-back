@@ -1,6 +1,7 @@
 package com.proyecto.intranet.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import lombok.Data;
 
@@ -14,6 +15,8 @@ public class DesignacionFiltroDto {
 	private LocalDate fecha;
 	
 	private Integer usuario;
+	
+	private List<Integer> idsDesignaciones;
 	
 	private int itemsPorPagina;
 	
