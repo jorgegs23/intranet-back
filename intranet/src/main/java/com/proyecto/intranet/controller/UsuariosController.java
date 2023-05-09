@@ -81,8 +81,8 @@ public class UsuariosController {
     }
     
     @GetMapping("/auth/login")
-	public ResponseEntity<UsuarioDto> login(@RequestParam String login, @RequestParam String pass){
-		UsuarioDto usuario = usuariosProvider.loginUsuario(login, pass);
-		return new ResponseEntity<>(usuario, HttpStatus.OK);		
+	public MessageResponseDto<UsuarioDto> login(@RequestParam String login, @RequestParam String pass){
+    	MessageResponseDto<UsuarioDto> usuario = usuariosProvider.loginUsuario(login, pass);
+		return usuario;		
 	}
 }

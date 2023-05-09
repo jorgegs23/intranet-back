@@ -190,20 +190,24 @@ public class UsuariosProviderImpl implements UsuariosProvider{
 	
 	
 	@Override
-	public UsuarioDto loginUsuario(String login, String pass) {
+	public MessageResponseDto<UsuarioDto> loginUsuario(String login, String pass) {
 		try {
 			Optional<UsuarioEntity> usuario = usuariosRepository.findByLoginAndPass(login, pass);
 			if (usuario.isPresent()) {
+				if (!usuario.get().getValidado()) {
+					return MessageResponseDto.fail("El usuario no esta validado");
+				}
 				UsuarioDto dto = modelMapper.map(usuario.get(), UsuarioDto.class);
-				return dto;
+				return MessageResponseDto.success(dto);
 			} else {
-				return null;
+				return MessageResponseDto.fail("Usuario o contraseña incorectos");
 			}
 			
 		} catch (Exception e) {
 			log.error("Error al encontrar el usuario en login: " +  e.getMessage());
+			return MessageResponseDto.fail("Error al comprobar el usuario");
 		}
-		return null;
+		
 	}
 
 	@Override

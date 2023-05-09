@@ -13,7 +13,7 @@ public interface UsuariosProvider {
 
 	MessageResponseDto<List<UsuarioDto>> getAllUsuarios();
 
-	UsuarioDto loginUsuario(String login, String pass);
+	MessageResponseDto<UsuarioDto> loginUsuario(String login, String pass);
 
 	MessageResponseDto<UsuarioDto> addUsuario(UsuarioDto usuarioDto);
 
