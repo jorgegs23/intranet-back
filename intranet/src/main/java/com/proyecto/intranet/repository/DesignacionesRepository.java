@@ -17,8 +17,8 @@ public interface DesignacionesRepository  extends JpaRepository<DesignacionEntit
 
 	@Query("SELECT e FROM DesignacionEntity e WHERE "
 			+ " (:#{#filtro.temporada} IS NULL OR :#{#filtro.temporada} = e.partido.temporada.id) AND "
-//			+ " (:#{#filtro.mes} IS NULL OR :#{#filtro.mes} = e.competicion.competicion) AND "
-			+ " (:#{#filtro.fecha} IS NULL OR :#{#filtro.fecha} = DATE(e.fecha) ) AND "
+			+ " (:#{#filtro.mes} IS NULL OR month(DATE(:#{#filtro.mes})) = month(DATE(e.fecha))) AND "
+			+ " (:#{#filtro.fecha} IS NULL OR DATE(:#{#filtro.fecha}) = DATE(e.fecha) ) AND "
 			+ " (:#{#filtro.usuario} IS NULL OR	"
 				+ " :#{#filtro.usuario} = e.arbitro1.id OR :#{#filtro.usuario} = e.arbitro2.id OR "
 				+ " :#{#filtro.usuario} = e.arbitro3.id OR  "

@@ -23,7 +23,7 @@ public interface PartidosRepository extends JpaRepository<PartidoEntity, Integer
 			+ " (:#{#filtro.categoria} IS NULL OR :#{#filtro.categoria} = e.categoria.categoria ) AND "
 			+ " (:#{#filtro.equipoLocal} IS NULL OR :#{#filtro.equipoLocal} = e.equipoLocal.id ) AND "
 			+ " (:#{#filtro.equipoVisitante} IS NULL OR :#{#filtro.equipoVisitante} = e.equipoVisitante.id ) AND "
-			+ " (:#{#filtro.fecha} IS NULL OR :#{#filtro.fecha} = DATE(e.fecha) ) ")
+			+ " (:#{#filtro.fecha} IS NULL OR DATE(:#{#filtro.fecha}) = DATE(e.fecha) )")
 	Page<PartidoEntity> filterPage(@Param("filtro") PartidoFiltroDto filtro, Pageable pageable);
 
 	@Query("SELECT DISTINCT(e.competicion) FROM PartidoEntity e WHERE "
