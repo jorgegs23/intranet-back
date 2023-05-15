@@ -19,7 +19,8 @@ public interface EquiposRepository extends JpaRepository<EquipoEntity, Integer> 
 			+ " ( :#{#filtro.nombre} IS NULL OR UPPER(e.nombre) LIKE UPPER(CONCAT('%',:#{#filtro.nombre},'%'))) AND "
 			+ " (:#{#filtro.categoria} IS NULL OR :#{#filtro.categoria} = e.categoria.categoria ) AND "
 			+ " (:#{#filtro.municipio} IS NULL OR UPPER(e.municipio) LIKE UPPER(CONCAT('%',:#{#filtro.municipio},'%'))) AND "
-			+ " (:#{#filtro.temporada} IS NULL OR :#{#filtro.temporada} = e.temporada.id )")
+			+ " (:#{#filtro.temporada} IS NULL OR :#{#filtro.temporada} = e.temporada.id )"
+			+ " ORDER BY e.temporada.id desc ")
 	Page<EquipoEntity> filterPage(@Param("filtro") EquipoFiltroDto filtro, Pageable pageable);
 
 	@Query("SELECT e FROM EquipoEntity e WHERE "
