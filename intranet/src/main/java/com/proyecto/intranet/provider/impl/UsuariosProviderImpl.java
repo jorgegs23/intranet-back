@@ -197,6 +197,9 @@ public class UsuariosProviderImpl implements UsuariosProvider{
 				if (!usuario.get().getValidado()) {
 					return MessageResponseDto.fail("El usuario no esta validado");
 				}
+				if (!usuario.get().getActivo()) {
+					return MessageResponseDto.fail("El usuario no esta activo");
+				}
 				UsuarioDto dto = modelMapper.map(usuario.get(), UsuarioDto.class);
 				return MessageResponseDto.success(dto);
 			} else {
